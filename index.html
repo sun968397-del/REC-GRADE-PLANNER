@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6d43c3">
+  <meta name="description" content="A private grade calculator for Rajalakshmi Engineering College AI&DS students.">
+  <title>REC AI&amp;DS Grade planner</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Rajalakshmi Engineering College AI&DS grade calculator with AADHI mascot">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5v3M5.5 10H3.5M20.5 10h-2M6.5 6.5l1.4 1.4m8.2-1.4-1.4 1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="2.5" r="1" fill="currentColor"/><rect x="5" y="7" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.7"/><circle cx="9.5" cy="12.5" r="1" fill="currentColor"/><circle cx="14.5" cy="12.5" r="1" fill="currentColor"/><path d="M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand-name">REC <span>AI&amp;DS</span><small>REC · STUDENT GRADE PLANNER</small></span>
+    </a>
+    <span class="privacy"><span class="privacy-dot"></span>Private · saved nowhere</span>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <span class="eyebrow"><span class="eyebrow-dot"></span>YOUR MARKS, MADE SIMPLE</span>
+      <h1>Know where you stand.</h1>
+      <p>Rajalakshmi Engineering College · Designed for AI&amp;DS students. Calculate weighted marks, plan a target grade, and estimate GPA or CGPA.</p>
+    </section>
+
+    <section class="subject-bar" aria-label="Subject and calculation">
+      <div class="subject-details">
+        <span class="subject-icon" aria-hidden="true">▤</span>
+        <label class="subject-label" for="subject-type">SUBJECT TYPE</label>
+      </div>
+      <select id="subject-type" aria-label="Subject type">
+        <option value="TO">Theory Only (TO)</option>
+        <option value="LOT">Lab Oriented Theory (LOT)</option>
+      </select>
+      <label class="semester-filter" for="semester-filter">SEMESTER
+        <select id="semester-filter" aria-label="Filter subjects by semester">
+          <option value="all">All semesters</option><option value="I">Semester I</option><option value="II">Semester II</option>
+          <option value="III">Semester III</option><option value="IV">Semester IV</option><option value="V">Semester V</option>
+          <option value="VI">Semester VI</option><option value="VII">Semester VII</option><option value="VIII">Semester VIII</option>
+        </select>
+      </label>
+      <p id="type-description" class="subject-description">Theory assessment · internal /40 + end-semester theory /60</p>
+    </section>
+
+    <nav class="tool-tabs" aria-label="Student tools">
+      <button class="tool-tab active" type="button" data-tab="calculator"><span>01</span>Mark calculator</button>
+      <button class="tool-tab" type="button" data-tab="target"><span>02</span>Target grade</button>
+      <button class="tool-tab" type="button" data-tab="gpa"><span>03</span>GPA &amp; CGPA</button>
+    </nav>
+
+    <section id="calculator-panel" class="tool-panel active">
+    <div class="workspace">
+      <section class="calculator-card" aria-labelledby="assessment-title">
+        <div class="card-heading">
+          <div>
+            <span class="section-kicker">ASSESSMENT MARKS</span>
+            <h2 id="assessment-title">Enter your marks</h2>
+          </div>
+          <span class="auto-badge"><span></span>Auto-calculates</span>
+        </div>
+
+        <div class="optional-details">
+          <label class="text-field">Your name <span>OPTIONAL</span><input id="student-name" type="text" maxlength="70" autocomplete="off" placeholder="Add your name"></label>
+          <label class="text-field">Subject <span>OPTIONAL · R2023 AI&amp;DS</span><select id="subject-picker" aria-label="Choose a curriculum subject"><option value="">Choose a subject</option></select><input id="subject-name" type="text" maxlength="90" autocomplete="off" placeholder="Enter your subject name" hidden></label>
+        </div>
+
+        <div id="assessment-fields" class="assessment-fields"></div>
+        <label class="absent-option"><input id="absent" type="checkbox"><span class="checkmark"></span><span><strong>I was absent</strong><small>Mark this assessment as absent</small></span></label>
+
+        <div class="card-footer">
+          <span class="validation-note"><span class="info-icon">i</span>Enter marks from 0 up to each component’s maximum.</span>
+          <div class="footer-actions">
+            <button type="button" class="button button-quiet" id="sample-button">Try a sample</button>
+            <button type="button" class="button button-reset" id="reset-button"><span aria-hidden="true">↻</span> Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="results-column">
+        <section class="result-card" aria-live="polite">
+          <div class="result-topline"><span>YOUR RESULT</span><span class="live-indicator"><i></i>LIVE</span></div>
+          <p id="result-context" class="result-context">Your grade will appear here</p>
+          <div class="grade-display">
+            <span id="grade-value" class="grade-value grade-empty">—</span>
+            <span id="grade-caption" class="grade-caption">Enter marks to calculate</span>
+          </div>
+          <div class="total-label">FINAL TOTAL <span>OUT OF 100</span></div>
+          <div class="total-display"><strong id="total-value">—</strong><span>/ 100</span></div>
+          <div class="total-track"><span id="total-bar"></span></div>
+          <div class="result-breakdown">
+            <div class="breakdown-row"><span><i class="breakdown-dot dot-internal"></i>Internal marks</span><strong id="internal-value">—</strong></div>
+            <div class="breakdown-row"><span><i class="breakdown-dot dot-external"></i>End-semester marks</span><strong id="external-value">—</strong></div>
+          </div>
+          <p id="result-message" class="result-message">Add your assessment marks to see your result.</p>
+          <div class="result-actions no-print">
+            <button type="button" class="result-action" id="copy-result">Copy result</button>
+            <button type="button" class="result-action" id="print-result">Print</button>
+          </div>
+        </section>
+
+        <section class="scale-card" aria-labelledby="scale-title">
+          <div class="scale-heading"><span class="scale-icon" aria-hidden="true">✦</span><div><h2 id="scale-title">Grading scale</h2><p>Your grade is based on your final total.</p></div></div>
+          <div class="grade-scale">
+            <span><b class="grade-chip chip-s">S</b><span>91–100</span></span>
+            <span><b class="grade-chip chip-aplus">A+</b><span>81–90</span></span>
+            <span><b class="grade-chip chip-a">A</b><span>71–80</span></span>
+            <span><b class="grade-chip chip-bplus">B+</b><span>66–70</span></span>
+            <span><b class="grade-chip chip-b">B</b><span>61–65</span></span>
+            <span><b class="grade-chip chip-cplus">C+</b><span>56–60</span></span>
+            <span><b class="grade-chip chip-c">C</b><span>50–55</span></span>
+            <span><b class="grade-chip chip-u">U</b><span>Below 50</span></span>
+          </div>
+          <p class="scale-footnote">GPA uses REC’s separate grade-point mapping, available in the GPA &amp; CGPA calculator.</p>
+        </section>
+      </aside>
+    </div>
+    </section>
+
+    <section id="target-panel" class="tool-panel" hidden>
+      <div class="feature-heading"><span class="feature-icon feature-blue" aria-hidden="true">◎</span><div><span class="section-kicker">PLAN AHEAD</span><h2>Target grade planner</h2><p>See the end-semester marks needed for your target grade, based on the internal marks you enter in the calculator.</p></div></div>
+      <div class="target-card">
+        <div class="target-controls">
+          <label class="target-select-label" for="target-grade">I’m aiming for</label>
+          <select id="target-grade">
+            <option value="S">S · 91+</option><option value="A+">A+ · 81+</option><option value="A" selected>A · 71+</option>
+            <option value="B+">B+ · 66+</option><option value="B">B · 61+</option><option value="C+">C+ · 56+</option><option value="C">C · 50+</option>
+          </select>
+        </div>
+        <div id="target-result" class="target-result" aria-live="polite"></div>
+        <p class="target-footnote">Estimates assume your entered internal marks are accurate. LOT shows the required mark if your two end-semester scores are equal; a different theory/lab split may also reach the target.</p>
+        <button type="button" class="button button-quiet target-link" data-tab="calculator">← Enter or update assessment marks</button>
+      </div>
+      <section class="card info-card"><strong>How this estimate works</strong><p>The planner uses your internal marks and exact grade thresholds. For LOT, it assumes equal ESE theory and lab marks when it calculates the target score for each exam. The result is a planning estimate, not an official grade.</p></section>
+    </section>
+
+    <section id="gpa-panel" class="tool-panel" hidden>
+      <div class="feature-heading"><span class="feature-icon feature-purple" aria-hidden="true">✦</span><div><span class="section-kicker">SEE THE BIGGER PICTURE</span><h2>GPA &amp; CGPA calculator</h2><p>Select courses from all eight semesters; curriculum credits fill automatically. REC grade points are prefilled and can be edited if your institution uses a different scale.</p></div></div>
+      <div id="gpa-workspace" class="gpa-workspace"></div>
+    </section>
+
+    <footer class="page-footer"><span>Designed by Surendar A, AP, AI&amp;DS, REC</span><span>For personal reference only · Confirm official results with your faculty.</span><span><i></i>Your marks stay in this page and are not saved.</span></footer>
+  </main>
+</body>
+</html>
