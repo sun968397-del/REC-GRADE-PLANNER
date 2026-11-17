@@ -198,12 +198,20 @@
       renderTargetPlan();
       return;
     }
-    const result=calculate(currentMarks(),state.type),grade=gradeFor(result.total),total=numberFormat(result.total);
+    const result=calculate(currentMarks(),state.type);
+    const eseMinimumMet=state.type==="LOT"
+      ?Number(currentMarks().eseTheory)>=45&&Number(currentMarks().eseLab)>=45
+      :Number(currentMarks().eseTheory)>=45;
+    const grade=eseMinimumMet?gradeFor(result.total):"U",total=numberFormat(result.total);
     const internal=numberFormat(result.internal),external=numberFormat(result.external);
-    const caption=grade==="U"?"Below the passing mark":"Your calculated grade";
-    let message=grade==="U"?"A total below 50 receives a U grade.":`A final total of ${total} earns grade ${grade}.`;
+    const caption=!eseMinimumMet?"ESE minimum not met":grade==="U"?"Below the passing mark":"Your calculated grade";
+    let message=!eseMinimumMet
+      ?state.type==="LOT"
+        ?"End-semester theory and lab marks must each be at least 45 / 100; a lower mark results in U."
+        :"End-semester theory marks below 45 / 100 result in U."
+      :grade==="U"?"A total below 50 receives a U grade.":`A final total of ${total} earns grade ${grade}.`;
     if(state.type==="LOT") {
-      message=`Theory internal ${numberFormat(result.theoryInternal)} + laboratory internal ${numberFormat(result.labInternal)} + end-semester theory ${numberFormat(result.endTheory)} + lab ${numberFormat(result.endLab)}.`;
+      message=`${message} Theory internal ${numberFormat(result.theoryInternal)} + laboratory internal ${numberFormat(result.labInternal)} + end-semester theory ${numberFormat(result.endTheory)} + lab ${numberFormat(result.endLab)}.`;
       $("#result-message").classList.add("result-detail");
     } else {
       $("#result-message").classList.remove("result-detail");
